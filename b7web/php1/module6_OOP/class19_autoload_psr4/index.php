@@ -15,11 +15,11 @@ require 'vendor/autoload.php';
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use \classes\basic_math\BasicMath;
-use \classes\photo\Upload;
+//use \classes\basic_math\BasicMath;
+//use \classes\photo\Upload;
 
-$clsBasicMath = new BasicMath();
-$clsUpload = new Upload();
+$clsBasicMath = new \classes\basic_math\BasicMath();
+$clsUpload = new \classes\photo\Upload();
 
 // create a log channel
 $log = new Logger('name');
