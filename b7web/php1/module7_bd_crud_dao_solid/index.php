@@ -1,12 +1,14 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=b7web', 'admin', 'admin');
+require_once 'config.php';
+?>
 
-$sql = $pdo->query('SELECT * FROM users');
+<a href="./add_user.php">Add User</a>
 
-echo "COUNT: {$sql->rowCount()} \r\n";
-
-$dados = $sql->fetchAll(PDO::FETCH_ASSOC);
-
-echo '<pre>';
-
-print_r($dados);
+<table border="1" width="100%">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>Actions</th>
+    </tr>
+</table>
