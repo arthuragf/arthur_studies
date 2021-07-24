@@ -1,6 +1,7 @@
 <?php
 //require for db connection
 require_once 'config.php';
+require_once 'dao/UserDaoMySql.php';
 
 //POST sanitize
 $nId = filter_input(INPUT_POST, 'id');
@@ -10,15 +11,16 @@ $sEmail = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 //Execute update query
 if($nId && $sName && $sEmail) {
 
-    $oSqlEmail = $pdo->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id');
-    $oSqlEmail->bindValue(':id', $nId);
-    $oSqlEmail->bindValue(':name', $sName);
-    $oSqlEmail->bindValue(':email', $sEmail);
-    $oSqlEmail->execute();
+    $clsUserDao = new UserDaoMySql($pdo);
+    $oUser = new User();
+    $oUser->setId($nId);
+    $oUser->setName($sName);
+    $oUser->setEmail($sEmail);
+    $clsUserDao->editUser($oUser);
   
     header('location:index.php');
     exit;
 } else {
     //ERROR: go to insert form
-    header('location:edit_user.php');
+    header('location:edit_user.php?id=' . $nId);
 }

@@ -1,18 +1,18 @@
 <?php
 require_once 'config.php';
+require_once 'dao/UserDaoMySql.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $nId = filter_input(INPUT_GET, 'id');
+$oUser = new stdClass();
 if ($nId) {
-    $oSql = $pdo->prepare('SELECT * FROM users WHERE id = :id');
-    $oSql->bindValue(':id', $nId);
-    $oSql->execute();
-    if ($oSql->rowCount() > 0) {
-        $aUser = $oSql->fetch(PDO::FETCH_ASSOC);
-    } else {
-        header('location:index.php');
-        exit;
-    }
-} else {
+    $clsUserDao = new UserDaoMySql($pdo);
+    $oUser = $clsUserDao->getById($nId);
+}
+if (!$oUser instanceof User) {
     header('location:index.php');
     exit;
 }
@@ -21,14 +21,14 @@ if ($nId) {
 <h1>Edit User</h1>
 
 <form method="POST" action="edit_user_action.php">
-    <input type="hidden" name="id" value="<?= $aUser['id'] ?>" />
+    <input type="hidden" name="id" value="<?= $oUser->getId(); ?>" />
     <label>
         Name:<br />
-        <input type="text" name="name" value="<?= $aUser['name'] ?>" />
+        <input type="text" name="name" value="<?= $oUser->getName(); ?>" />
     </label><br /><br />
     <label>
         E-mail:<br />
-        <input type="email" name="email" value="<?= $aUser['email'] ?>"/>
+        <input type="email" name="email" value="<?= $oUser->getEmail(); ?>"/>
     </label><br /><br />
     <input type="submit" value="Edit User" />
 </form>

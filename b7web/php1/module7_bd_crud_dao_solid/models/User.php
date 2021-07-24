@@ -21,11 +21,11 @@ class User {
     }
 
     public function getEmail() {
-        return $this->name;
+        return $this->email;
     }
 
     public function setEmail($sEmail) {
-        $this->name = strtolower(trim($sEmail));
+        $this->email = strtolower(trim($sEmail));
     }
 }
 
@@ -33,6 +33,7 @@ interface UserDAO {
     public function addUser(User $oUser);
     public function getUsers();
     public function getById($nId);
+    public function getByEmail($sEmail);
     public function editUser(User $oUser);
     public function deleteUser($nId);
 }
