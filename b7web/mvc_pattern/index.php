@@ -1,3 +1,2 @@
 <?php
-echo phpinfo();
-//echo "URL = {$_GET['url']}";
+echo "URL = {$_GET['url']}";
