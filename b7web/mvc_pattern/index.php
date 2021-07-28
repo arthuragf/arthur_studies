@@ -3,6 +3,7 @@ session_start();
 require 'config.php';
 
 spl_autoload_register(function($sClass){
+    
     $sFile = $sClass . '.class.php';
     if (file_exists('controllers/' . $sFile)) {
         require 'controllers/' . $sFile;
