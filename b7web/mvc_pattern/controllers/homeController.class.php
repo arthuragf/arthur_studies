@@ -2,10 +2,12 @@
 class homeController extends Controller {
 
     public function index() {
-        
+        $clsAds = new Ads();
+        $clsUsers = new Users();
+
         $aData = [
-            'nPosts' => 5
-            , 'sName' => 'Arthur'
+            'nAds' => $clsAds->getAds()  
+            , 'sName' => $clsUsers->getName()
         ];
 
         $this->loadTemplate('home', $aData);
