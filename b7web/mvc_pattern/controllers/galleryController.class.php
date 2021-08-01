@@ -9,4 +9,12 @@ class galleryController extends Controller {
         $this->loadTemplate('gallery', $aData);
     }
 
+    public function open($nId = 0) {
+        $aData = [
+            'nId' => $nId
+        ];
+
+        $this->loadTemplate('galleryPhoto', $aData);
+    }
+
 }
