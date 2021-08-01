@@ -1,5 +1,11 @@
 <?php
-class homeController extends Controller {
+namespace Controllers;
+
+use \Core\Controller;
+use \Models\Users;
+use \Models\Ads;
+
+class HomeController extends Controller {
 
     public function index() {
         $clsAds = new Ads();

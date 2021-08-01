@@ -1,4 +1,8 @@
 <?php
+namespace Models;
+
+use \Core\Models;
+
 class Ads extends Models {
 
     public function getAds() {

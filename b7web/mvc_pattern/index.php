@@ -3,17 +3,17 @@ session_start();
 require 'config.php';
 require 'routes.php';
 
+
+
 spl_autoload_register(function($sClass){
+    $sBaseDir = dirname(__FILE__);
     
-    $sFile = $sClass . '.class.php';
-    if (file_exists('controllers/' . $sFile)) {
-        require 'controllers/' . $sFile;
-    } elseif (file_exists('models/' . $sFile)) {
-        require 'models/' . $sFile;
-    } elseif (file_exists('core/' . $sFile)) {
-        require 'core/' . $sFile;    
+    $sFile = str_replace('\\', '/', $sClass) . '.class.php';
+
+    if (file_exists($sFile)) {
+        require $sFile;
     }
 });
 
-$oCore = new Core();
+$oCore = new Core\Core();
 $oCore->run();

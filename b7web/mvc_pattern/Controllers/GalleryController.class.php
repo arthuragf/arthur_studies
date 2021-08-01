@@ -1,5 +1,9 @@
 <?php
-class galleryController extends Controller {
+namespace Controllers;
+
+use \Core\Controller;
+
+class GalleryController extends Controller {
     
     public function index() {
         $aData = [
