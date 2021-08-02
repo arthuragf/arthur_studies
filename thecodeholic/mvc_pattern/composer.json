@@ -1,0 +1,15 @@
+{
+    "name": "arthur/mvc_pattern",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arthur Faria",
+            "email": "arthur.agf@gmail.com"
+        }
+    ],
+    "require": {}
+}
