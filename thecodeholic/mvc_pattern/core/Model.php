@@ -71,4 +71,12 @@ abstract class Model {
             , self::RULE_MATCH => 'This field must be the same as {match}'
         ];
     }
+
+    public function hasError($sAttribute) {
+        return $this->aErrors[$sAttribute] ?? false;
+    }
+
+    public function getFirstError($sAttribute) {
+        return $this->aErrors[$sAttribute][0] ?? false;
+    }
 }

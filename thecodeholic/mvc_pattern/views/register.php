@@ -1,33 +1,16 @@
 <h1>Create an account</h1>
 
-<form action="" method="post">
+<?php $oForm = \app\core\form\Form::begin('', 'post'); ?>
     <div class="row">
         <div class="col">
-            <div class="mb-3">
-                <label class="form-label">First Name</label>
-                <input type="text" class="form-control" name="sFirstName">
-            </div>
+            <?= $oForm->field($clsRegisterModel, 'sFirstName'); ?>
         </div>
         <div class="col">
-            <div class="mb-3">
-                <label class="form-label">Last Name</label>
-                <input type="text" class="form-control" name="sLastName">
-            </div>
+            <?= $oForm->field($clsRegisterModel, 'sLastName'); ?>
         </div>
     </div>
-    
-   
-    <div class="mb-3">
-        <label class="form-label">E-mail</label>
-        <input type="email" class="form-control" name="sEmail">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-control" name="sPassword">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" name="sConfirmPassword">
-    </div>
+    <?= $oForm->field($clsRegisterModel, 'sEmail'); ?>
+    <?= $oForm->field($clsRegisterModel, 'sPassword')->passwordField(); ?>
+    <?= $oForm->field($clsRegisterModel, 'sConfirmPassword')->passwordField(); ?>
     <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<?= \app\core\form\Form::end(); ?>

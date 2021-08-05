@@ -3,11 +3,11 @@ namespace app\models;
 use app\core\Model;
 
 class RegisterModel extends Model {
-    public string $sFirstName;
-    public string $sLastName;
-    public string $sEmail;
-    public string $sPassword;
-    public string $sConfirmPassword;
+    public string $sFirstName = '';
+    public string $sLastName = '';
+    public string $sEmail = '';
+    public string $sPassword = '';
+    public string $sConfirmPassword = '';
 
     public function register() {
         return 'Creating a new user';
