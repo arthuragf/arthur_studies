@@ -3,7 +3,7 @@ namespace app\core;
 class Application {
     public static string $ROOT_DIR;
     public static Application $clsApp;
-    public Database $clssDb;
+    public Database $clsDb;
     public Router $clsRouter;
     public Request $clsRequest;
     public Response $clsResponse;

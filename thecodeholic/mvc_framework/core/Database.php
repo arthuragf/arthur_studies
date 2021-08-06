@@ -24,7 +24,8 @@ class Database {
         $aFiles = scandir(Application::$ROOT_DIR . '/migrations');
         $aAppliedMigrations = $this->getAppliedMigrations();
         $aToApplyMigrations = array_diff($aFiles, $aAppliedMigrations);
-        
+        $aNewMigrations = [];
+      
         foreach ($aToApplyMigrations as $sMigration) {
             if ($sMigration === '.' || $sMigration === '..') {
                 continue;
@@ -32,18 +33,40 @@ class Database {
 
             require_once Application::$ROOT_DIR . '/migrations/' . $sMigration;
             $sClsName = pathinfo($sMigration, PATHINFO_FILENAME);
-            $oInstance = new $sClsName();
-            echo 'applying migration' . $sMigration . PHP_EOL;
-            $oInstance->up();
-            echo 'applied migration' . $sMigration . PHP_EOL;
-
             
+            $oInstance = new $sClsName($this);
+            $this->log('applying migration' . $sMigration);
+            $oInstance->up();
+            $this->log('applied migration' . $sMigration);
+            $aNewMigrations[] = $sMigration;
+            
+        }
+         
+        if (!empty($aNewMigrations)) {
+            $this->saveMigrations($aNewMigrations);
+        } else {
+            $this->log('All migrations are applied');
         }
     }
 
     private function getAppliedMigrations() {
         $oSql = $this->oPdo->prepare('SELECT migration FROM migrations');
 
+        $oSql->execute();
+
         return $oSql->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    private function saveMigrations(array $aNewMigrations) {
+
+        $sNewMigrations = implode(',',array_map(fn($v) => "('$v')", $aNewMigrations));
+        
+        $oSql = $this->oPdo->prepare('INSERT INTO migrations (migration) VALUES ' . $sNewMigrations);
+
+        $oSql->execute();
+    }
+
+    protected function log($sMessage) {
+        echo '[' . date('Y-m-d H:i:s') . '] - ' . $sMessage . PHP_EOL;
     }
 }

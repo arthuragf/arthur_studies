@@ -1,10 +1,20 @@
 <?php
 class m0002_add_password_column {
+    public app\core\Database $clsDb;
+
+    public function __construct (app\core\Database $clsDb) {
+        $this->clsDb = $clsDb;
+    }
+
     public function up() {
-        echo "applying migration" . PHP_EOL;
+        $this->clsDb->oPdo->exec('
+            ALTER TABLE users ADD COLUMN password VARCHAR(512) NOT NULL;
+        ');
     }
 
     public function down() {
-        echo "down migration" . PHP_EOL;
+        $this->clsDb->oPdo->exec('
+            ALTER TABLE users DROP COLUMN password;
+        ');
     }
 }
