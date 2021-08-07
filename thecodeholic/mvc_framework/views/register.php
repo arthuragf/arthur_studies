@@ -3,14 +3,14 @@
 <?php $oForm = \app\core\form\Form::begin('', 'post'); ?>
     <div class="row">
         <div class="col">
-            <?= $oForm->field($clsRegisterModel, 'sFirstName'); ?>
+            <?= $oForm->field($clsUser, 'firstname'); ?>
         </div>
         <div class="col">
-            <?= $oForm->field($clsRegisterModel, 'sLastName'); ?>
+            <?= $oForm->field($clsUser, 'lastname'); ?>
         </div>
     </div>
-    <?= $oForm->field($clsRegisterModel, 'sEmail'); ?>
-    <?= $oForm->field($clsRegisterModel, 'sPassword')->passwordField(); ?>
-    <?= $oForm->field($clsRegisterModel, 'sConfirmPassword')->passwordField(); ?>
+    <?= $oForm->field($clsUser, 'email'); ?>
+    <?= $oForm->field($clsUser, 'password')->passwordField(); ?>
+    <?= $oForm->field($clsUser, 'confirmpassword')->passwordField(); ?>
     <button type="submit" class="btn btn-primary">Submit</button>
 <?= \app\core\form\Form::end(); ?>

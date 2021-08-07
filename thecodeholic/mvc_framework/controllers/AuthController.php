@@ -2,7 +2,7 @@
 namespace app\controllers;
 use app\core\Controller;
 use app\core\Request;
-use app\models\RegisterModel;
+use app\models\User;
 
 class AuthController extends Controller{
     public function login(Request $clsRequest) {
@@ -11,22 +11,22 @@ class AuthController extends Controller{
     }
 
     public function register(Request $clsRequest) {
-        $clsRegisterModel = new RegisterModel();
+        $clsUser = new User();
         if ($clsRequest->isPost()) {
-            $clsRegisterModel->loadData($clsRequest->getBody());
+            $clsUser->loadData($clsRequest->getBody());
             
-            if ($clsRegisterModel->validate() && $clsRegisterModel->register()) {
+            if ($clsUser->validate() && $clsUser->save()) {
                 return 'Success';
             }
 
             return $this->render('register', [
-                'clsRegisterModel' => $clsRegisterModel
+                'clsUser' => $clsUser
             ]);
             
         }
         $this->setLayout('auth');
         return $this->render('register', [
-            'clsRegisterModel' => $clsRegisterModel
+            'clsUser' => $clsUser
         ]);
     }
 }

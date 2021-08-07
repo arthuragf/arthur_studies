@@ -22,7 +22,7 @@ class Field {
             <div class="form-group mb-3">
                 <label class="form-label">%s</label>
                 <input type="%s" name="%s" value="%s" class="form-control %s">
-                <div class="invalid-feedback">%s</div
+                <div class="invalid-feedback">%s</div>
             </div>
         '
             , $this->sAttribute
