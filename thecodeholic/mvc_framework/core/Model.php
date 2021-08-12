@@ -50,6 +50,23 @@ abstract class Model {
                 if ($sRuleName === self::RULE_MATCH && $sValue !== $this->{$rule['match']}) {
                     $this->addError($sAttribute, self::RULE_MATCH, $rule);
                 }
+                if ($sRuleName === self::RULE_UNIQUE) {
+                    $oClass = $rule['oClass'];
+                    $sUniqueAttribute = $rule['sAttribute'] ?? $sAttribute;
+                    $sTableName = $oClass->getTableName();
+                    $oSql = Application::$clsApp->clsDb->prepare('SELECT * FROM ' 
+                        . $sTableName 
+                        . ' WHERE '
+                        . $sUniqueAttribute . ' = :attr' 
+                    );
+                    $oSql->bindValue(':attr', $sValue);
+                    $oSql->execute();
+                    $oRecord = $oSql->fetchObject();
+                    
+                    if ($oRecord) {
+                        $this->addError($sAttribute, self::RULE_UNIQUE, ['field' => $sAttribute]);
+                    }
+                }
             }
         }
         return empty($this->aErrors);
@@ -70,6 +87,7 @@ abstract class Model {
             , self::RULE_MIN => 'Min Length of this field must be {min}'
             , self::RULE_MAX => 'Max Length of this field must be {max}'
             , self::RULE_MATCH => 'This field must be the same as {match}'
+            , self::RULE_UNIQUE => 'Record with this {field} already exists'
         ];
     }
 

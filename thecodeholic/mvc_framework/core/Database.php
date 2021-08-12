@@ -66,6 +66,10 @@ class Database {
         $oSql->execute();
     }
 
+    public function prepare($sSql) {
+        return $this->oPdo->prepare($sSql);
+    }
+
     protected function log($sMessage) {
         echo '[' . date('Y-m-d H:i:s') . '] - ' . $sMessage . PHP_EOL;
     }
