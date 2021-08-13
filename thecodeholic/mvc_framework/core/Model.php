@@ -21,6 +21,14 @@ abstract class Model {
 
     abstract public function rules(): array;
 
+    public function labels():array {
+        return [];
+    }
+
+    public function getLabel($sAttribute) {
+        return $this->labels()[$sAttribute] ?? $sAttribute;
+    }
+
     public function validate() {
         foreach ($this->rules() as $sAttribute => $aRules) {
             $sValue = $this->{$sAttribute};
@@ -48,6 +56,7 @@ abstract class Model {
                 }
 
                 if ($sRuleName === self::RULE_MATCH && $sValue !== $this->{$rule['match']}) {
+                    $rule['match'] = $this->getLabel($rule['match']);
                     $this->addError($sAttribute, self::RULE_MATCH, $rule);
                 }
                 if ($sRuleName === self::RULE_UNIQUE) {
@@ -64,7 +73,7 @@ abstract class Model {
                     $oRecord = $oSql->fetchObject();
                     
                     if ($oRecord) {
-                        $this->addError($sAttribute, self::RULE_UNIQUE, ['field' => $sAttribute]);
+                        $this->addError($sAttribute, self::RULE_UNIQUE, ['field' => $this->getLabel($sAttribute)]);
                     }
                 }
             }

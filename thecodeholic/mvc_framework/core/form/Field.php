@@ -25,7 +25,7 @@ class Field {
                 <div class="invalid-feedback">%s</div>
             </div>
         '
-            , $this->sAttribute
+            , $this->clsModel->getLabel($this->sAttribute)
             , $this->sType
             , $this->sAttribute
             , $this->clsModel->{$this->sAttribute}

@@ -10,7 +10,7 @@ class User extends DbModel {
     public string $lastname = '';
     public string $email = '';
     public string $password = '';
-    public string $confirmpassword = '';
+    public string $confirmPassword = '';
     public int $status = self::STATUS_INACTIVE;
 
     public function getTableName(): string {
@@ -41,7 +41,16 @@ class User extends DbModel {
                 , [self::RULE_MIN, 'min' => 8]
                 , [self::RULE_MAX, 'max' => 24]
             ]
-            , 'confirmpassword' =>[self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
+            , 'confirmPassword' =>[self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
+        ];
+    }
+    public function labels(): array {
+        return [
+            'firstname' => 'First name'
+            , 'lastname' => 'Last name'
+            , 'email' => 'Email'
+            , 'password' => 'Password'
+            , 'confirmPassword' => 'Confirm password'
         ];
     }
 

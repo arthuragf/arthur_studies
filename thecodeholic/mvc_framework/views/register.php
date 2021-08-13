@@ -11,6 +11,6 @@
     </div>
     <?= $oForm->field($clsUser, 'email'); ?>
     <?= $oForm->field($clsUser, 'password')->passwordField(); ?>
-    <?= $oForm->field($clsUser, 'confirmpassword')->passwordField(); ?>
+    <?= $oForm->field($clsUser, 'confirmPassword')->passwordField(); ?>
     <button type="submit" class="btn btn-primary">Submit</button>
 <?= \app\core\form\Form::end(); ?>
