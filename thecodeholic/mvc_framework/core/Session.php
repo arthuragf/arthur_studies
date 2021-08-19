@@ -27,6 +27,18 @@ class Session {
         return $_SESSION[self::FLASH_KEY][$sKey]['sValue'] ?? '';
     }
 
+    public function set($key, $value) {
+        $_SESSION[$key] = $value;
+    }
+
+    public function get($key) {
+        return $_SESSION[$key] ?? false;
+    }
+
+    public function unset($key) {
+        unset($_SESSION[$key]);
+    }
+
     public function __destruct() {
         $aFlashMessages = $_SESSION[self::FLASH_KEY] ?? [];
         foreach ($aFlashMessages as $sKey => &$aFlashMessage) {

@@ -8,6 +8,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
 $aConfig = [
+    'sUserClass' => \app\models\User::class,
     'db' => [
         'sDsn' => $_ENV['DB_DSN']
         , 'sUser' => $_ENV['DB_USER']

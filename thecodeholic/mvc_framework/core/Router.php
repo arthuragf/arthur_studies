@@ -37,7 +37,7 @@ class Router {
             Application::$clsApp->clsController = $fnCallback[0] = new $fnCallback[0]();
         }
         
-        return call_user_func($fnCallback, $this->clsRequest);
+        return call_user_func($fnCallback, $this->clsRequest, $this->clsResponse);
     }
 
     public function renderView($sView, $aParams = []) {

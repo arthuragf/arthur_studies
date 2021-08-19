@@ -40,24 +40,24 @@ abstract class Model {
                 }
             
                 if ($sRuleName === self::RULE_REQUIRED && empty($sValue)) {
-                    $this->addError($sAttribute, self::RULE_REQUIRED);
+                    $this->addErrorForRule($sAttribute, self::RULE_REQUIRED);
                 }
 
                 if ($sRuleName === self::RULE_EMAIL && !filter_var($sValue, FILTER_VALIDATE_EMAIL)) {
-                    $this->addError($sAttribute, self::RULE_EMAIL);
+                    $this->addErrorForRule($sAttribute, self::RULE_EMAIL);
                 }
 
                 if ($sRuleName === self::RULE_MIN && strlen($sValue) < $rule['min']) {
-                    $this->addError($sAttribute, self::RULE_MIN, $rule);
+                    $this->addErrorForRule($sAttribute, self::RULE_MIN, $rule);
                 }
 
                 if ($sRuleName === self::RULE_MAX && strlen($sValue) > $rule['max']) {
-                    $this->addError($sAttribute, self::RULE_MAX, $rule);
+                    $this->addErrorForRule($sAttribute, self::RULE_MAX, $rule);
                 }
 
                 if ($sRuleName === self::RULE_MATCH && $sValue !== $this->{$rule['match']}) {
                     $rule['match'] = $this->getLabel($rule['match']);
-                    $this->addError($sAttribute, self::RULE_MATCH, $rule);
+                    $this->addErrorForRule($sAttribute, self::RULE_MATCH, $rule);
                 }
                 if ($sRuleName === self::RULE_UNIQUE) {
                     $oClass = $rule['oClass'];
@@ -73,7 +73,7 @@ abstract class Model {
                     $oRecord = $oSql->fetchObject();
                     
                     if ($oRecord) {
-                        $this->addError($sAttribute, self::RULE_UNIQUE, ['field' => $this->getLabel($sAttribute)]);
+                        $this->addErrorForRule($sAttribute, self::RULE_UNIQUE, ['field' => $this->getLabel($sAttribute)]);
                     }
                 }
             }
@@ -81,11 +81,15 @@ abstract class Model {
         return empty($this->aErrors);
     }
 
-    public function addError(string $sAttribute, string $sRule, $aParams = []) {
+    private function addErrorForRule(string $sAttribute, string $sRule, $aParams = []) {
         $sMessage = $this->errorMessages()[$sRule] ?? '';
         foreach ($aParams as $key => $value) {
             $sMessage = str_replace("{{$key}}", $value, $sMessage);
         }
+        $this->aErrors[$sAttribute][] = $sMessage;
+    }
+
+    public function addError(string $sAttribute, string $sMessage) {
         $this->aErrors[$sAttribute][] = $sMessage;
     }
 
