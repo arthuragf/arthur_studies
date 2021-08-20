@@ -2,12 +2,15 @@
 namespace app\controllers;
 use app\core\Controller;
 use app\core\Request;
+use app\core\Application;
 
 class SiteController extends Controller {
 
     public function home() {
         $aParams = [
-            'sName' => 'John Doe'
+            'sName' => (!empty(Application::$clsApp->oUser)) 
+            ? Application::$clsApp->oUser->getDisplayName() 
+            : 'Guest'
         ];
         return $this->render('home', $aParams);
     }

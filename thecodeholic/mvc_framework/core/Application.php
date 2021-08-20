@@ -57,4 +57,8 @@ class Application {
         $this->oUser = null;
         $this->clsSession->unset('user');
     }
+
+    public static function isGuest() {
+        return !self::$clsApp->oUser;
+    }
 }

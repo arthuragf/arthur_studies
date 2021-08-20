@@ -42,4 +42,9 @@ class AuthController extends Controller{
             'clsUser' => $clsUser
         ]);
     }
+    
+    public function logout(Request $clsRequest, Response $clsResponse) {
+        Application::$clsApp->logout();
+        $clsResponse->redirect('/');
+    }
 }
