@@ -6,8 +6,15 @@ use app\core\Request;
 use app\core\Response;
 use app\models\User;
 use app\models\LoginForm;
+use app\core\middlewears\AuthMiddlewear;
 
 class AuthController extends Controller{
+
+    public function __construct() {
+
+        $this->registerMiddlewear(new AuthMiddlewear(['profile']));
+    }
+
     public function login(Request $clsRequest, Response $clsResponse) {
         $clsLoginForm = new LoginForm();
         if ($clsRequest->isPost()) {
@@ -47,4 +54,9 @@ class AuthController extends Controller{
         Application::$clsApp->logout();
         $clsResponse->redirect('/');
     }
+
+    public function profile() {
+        return $this->render('profile');
+    }
+
 }

@@ -26,5 +26,6 @@ $oApp->clsRouter->post('/login', [AuthController::class, 'login']);
 $oApp->clsRouter->get('/register', [AuthController::class, 'register']);
 $oApp->clsRouter->post('/register', [AuthController::class, 'register']);
 $oApp->clsRouter->get('/logout', [AuthController::class, 'logout']);
+$oApp->clsRouter->get('/profile', [AuthController::class, 'profile']);
 
 $oApp->run();

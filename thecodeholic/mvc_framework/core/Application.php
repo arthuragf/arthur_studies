@@ -4,11 +4,12 @@ class Application {
     public static string $ROOT_DIR;
     public static Application $clsApp;
     public string $sUserClass;
+    public string $sLayout = 'main';
     public Database $clsDb;
     public Router $clsRouter;
     public Request $clsRequest;
     public Response $clsResponse;
-    public Controller $clsController;
+    public ?Controller $clsController = null;
     public Session $clsSession;
     public ?DbModel $oUser;
     
@@ -42,7 +43,13 @@ class Application {
     }
 
     public function run() {
-        echo $this->clsRouter->resolve();
+        try {
+            echo $this->clsRouter->resolve();
+        } catch (\Exception $e) {
+            $this->clsResponse->setStatusCode($e->getCode());
+            echo $this->clsRouter->renderView('_error', ['oException' => $e]);
+        }
+        
     }
 
     public function login(DbModel $oUser) {

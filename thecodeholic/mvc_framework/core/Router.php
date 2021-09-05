@@ -1,5 +1,7 @@
 <?php
 namespace app\core;
+use app\core\exceptions\NotFoundException;
+
 class Router {
     protected array $aRoutes = [];
     public Request $clsRequest;
@@ -24,8 +26,7 @@ class Router {
         $fnCallback = $this->aRoutes[$sMethod][$sPath] ?? false;
 
         if ($fnCallback === false) {
-            $this->clsResponse->setStatusCode('404');
-            return $this->renderView('_404');
+            throw new NotFoundException();
         }
 
         if (is_string($fnCallback)) {
@@ -33,10 +34,19 @@ class Router {
         }
 
         if (is_array($fnCallback)) {
-            //$fnCallback[0] = new $fnCallback[0]();
-            Application::$clsApp->clsController = $fnCallback[0] = new $fnCallback[0]();
+            /**
+             * @var \app\core\Controller $clsController
+             */
+            $clsController = new $fnCallback[0]();
+            Application::$clsApp->clsController = $clsController;
+            $clsController->sAction = $fnCallback[1];
+            $fnCallback[0] = $clsController;
         }
         
+        foreach ($clsController->getMiddlewears() as $middleware) {
+            $middleware->execute();
+        }
+
         return call_user_func($fnCallback, $this->clsRequest, $this->clsResponse);
     }
 
@@ -47,8 +57,10 @@ class Router {
     }
 
     protected function getLayoutContent() {
-        
-        $sLayout = Application::$clsApp->clsController->sLayout;
+        $sLayout = Application::$clsApp->sLayout;
+        if (Application::$clsApp->clsController) {
+            $sLayout = Application::$clsApp->clsController->sLayout;
+        }
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/$sLayout.php";
         return ob_get_clean();
