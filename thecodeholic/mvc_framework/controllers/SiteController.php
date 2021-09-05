@@ -3,6 +3,8 @@ namespace app\controllers;
 use app\core\Controller;
 use app\core\Request;
 use app\core\Application;
+use app\core\Response;
+use app\models\ContactForm;
 
 class SiteController extends Controller {
 
@@ -15,15 +17,15 @@ class SiteController extends Controller {
         return $this->render('home', $aParams);
     }
 
-    public function contact() {
-        
-        return $this->render('contact');
+    public function contact(Request $clsRequest, Response $clsResponse) {
+        $clsContact = new ContactForm();
+        if ($clsRequest->isPost()) {
+            $clsContact->loadData($clsRequest->getBody());
+            if($clsContact->validate() && $clsContact->send()) {
+                Application::$clsApp->clsSession->setFlash('success', 'Thanks for contacting us.');
+                return $clsResponse->redirect('/contact');
+            }
+        }
+        return $this->render('contact', ['clsModel' => $clsContact]);
     }
-
-    public function handleContact(Request $clsRequest) {
-        $aBody = $clsRequest->getBody();
-        print_r($aBody);
-        return "Handling Submitted Data";
-    }
-
 }

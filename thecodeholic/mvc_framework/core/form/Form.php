@@ -12,8 +12,11 @@ class Form {
         echo '</form>';
     }
 
-    public function field(Model $clsModel, $sAttribute) {
-        return new Field ($clsModel, $sAttribute);
+    public function InputField(Model $clsModel, $sAttribute) {
+        return new InputField ($clsModel, $sAttribute);
+    }
 
+    public function TextareaField(Model $clsModel, $sAttribute) {
+        return new TextareaField ($clsModel, $sAttribute);
     }
 }

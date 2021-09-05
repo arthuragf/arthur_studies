@@ -20,7 +20,7 @@ $oApp = new Application(dirname(__DIR__), $aConfig);
 
 $oApp->clsRouter->get('/', [SiteController::class, 'home']);
 $oApp->clsRouter->get('/contact', [SiteController::class, 'contact']);
-$oApp->clsRouter->post('/contact', [SiteController::class, 'handleContact']);
+$oApp->clsRouter->post('/contact', [SiteController::class, 'contact']);
 $oApp->clsRouter->get('/login', [AuthController::class, 'login']);
 $oApp->clsRouter->post('/login', [AuthController::class, 'login']);
 $oApp->clsRouter->get('/register', [AuthController::class, 'register']);

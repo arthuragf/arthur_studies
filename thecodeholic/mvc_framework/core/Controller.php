@@ -14,7 +14,7 @@ class Controller {
     }
 
     public function render($sView, $aParams = []) {
-        return Application::$clsApp->clsRouter->renderView($sView, $aParams);
+        return Application::$clsApp->clsView->renderView($sView, $aParams);
     }
 
     public function registerMiddlewear(BaseMiddlewear $clsMiddlewear) {

@@ -1,5 +1,8 @@
 <?php
 namespace app\core;
+
+use app\core\db\Database;
+
 class Application {
     public static string $ROOT_DIR;
     public static Application $clsApp;
@@ -11,7 +14,8 @@ class Application {
     public Response $clsResponse;
     public ?Controller $clsController = null;
     public Session $clsSession;
-    public ?DbModel $oUser;
+    public ?UserModel $oUser;
+    public View $clsView;
     
 
     public function __construct($sRootPath, array $aConfig) {
@@ -23,6 +27,7 @@ class Application {
         $this->clsResponse = new Response();
         $this->clsRouter = new Router($this->clsRequest, $this->clsResponse);
         $this->clsDb = new Database($aConfig['db']);
+        $this->clsView = new View();
 
         $clsUser = new $this->sUserClass;
         $sPrimaryKey = $clsUser->primaryKey();
@@ -47,12 +52,12 @@ class Application {
             echo $this->clsRouter->resolve();
         } catch (\Exception $e) {
             $this->clsResponse->setStatusCode($e->getCode());
-            echo $this->clsRouter->renderView('_error', ['oException' => $e]);
+            echo $this->clsView->renderView('_error', ['oException' => $e]);
         }
         
     }
 
-    public function login(DbModel $oUser) {
+    public function login(UserModel $oUser) {
         $this->oUser = $oUser;
         $sPrimaryKey = $oUser->primaryKey();
         $nPrimaryValue = $oUser->{$sPrimaryKey};
