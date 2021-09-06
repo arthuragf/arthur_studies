@@ -16,16 +16,25 @@ $aConfig = [
     ]
 ];
 
-$oApp = new Application(dirname(__DIR__), $aConfig);
+$clsApp = new Application(dirname(__DIR__), $aConfig);
 
-$oApp->clsRouter->get('/', [SiteController::class, 'home']);
-$oApp->clsRouter->get('/contact', [SiteController::class, 'contact']);
-$oApp->clsRouter->post('/contact', [SiteController::class, 'contact']);
-$oApp->clsRouter->get('/login', [AuthController::class, 'login']);
-$oApp->clsRouter->post('/login', [AuthController::class, 'login']);
-$oApp->clsRouter->get('/register', [AuthController::class, 'register']);
-$oApp->clsRouter->post('/register', [AuthController::class, 'register']);
-$oApp->clsRouter->get('/logout', [AuthController::class, 'logout']);
-$oApp->clsRouter->get('/profile', [AuthController::class, 'profile']);
+if (!empty($_ENV['DEBUG_MODE'])) {
+    $clsApp->on(Application::EVENT_BEFORE_REQUEST, function(){
+        echo 'Before request';
+    });
+    $clsApp->on(Application::EVENT_AFTER_REQUEST, function(){
+        echo 'After request';
+    });
+}
 
-$oApp->run();
+$clsApp->clsRouter->get('/', [SiteController::class, 'home']);
+$clsApp->clsRouter->get('/contact', [SiteController::class, 'contact']);
+$clsApp->clsRouter->post('/contact', [SiteController::class, 'contact']);
+$clsApp->clsRouter->get('/login', [AuthController::class, 'login']);
+$clsApp->clsRouter->post('/login', [AuthController::class, 'login']);
+$clsApp->clsRouter->get('/register', [AuthController::class, 'register']);
+$clsApp->clsRouter->post('/register', [AuthController::class, 'register']);
+$clsApp->clsRouter->get('/logout', [AuthController::class, 'logout']);
+$clsApp->clsRouter->get('/profile', [AuthController::class, 'profile']);
+
+$clsApp->run();

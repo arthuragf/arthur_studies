@@ -4,6 +4,9 @@ namespace app\core;
 use app\core\db\Database;
 
 class Application {
+    const EVENT_BEFORE_REQUEST = 'beforeRequest';
+    const EVENT_AFTER_REQUEST = 'afterRequest';
+
     public static string $ROOT_DIR;
     public static Application $clsApp;
     public string $sUserClass;
@@ -16,7 +19,7 @@ class Application {
     public Session $clsSession;
     public ?UserModel $oUser;
     public View $clsView;
-    
+    protected array $aEventListeners;
 
     public function __construct($sRootPath, array $aConfig) {
         $this->sUserClass = $aConfig['sUserClass'];
@@ -48,13 +51,14 @@ class Application {
     }
 
     public function run() {
+        $this->triggerEvent(self::EVENT_BEFORE_REQUEST);
         try {
             echo $this->clsRouter->resolve();
         } catch (\Exception $e) {
             $this->clsResponse->setStatusCode($e->getCode());
             echo $this->clsView->renderView('_error', ['oException' => $e]);
         }
-        
+        $this->triggerEvent(self::EVENT_AFTER_REQUEST);
     }
 
     public function login(UserModel $oUser) {
@@ -72,5 +76,18 @@ class Application {
 
     public static function isGuest() {
         return !self::$clsApp->oUser;
+    }
+
+    public function on($sEventName, $sCallback) {
+        $this->aEventListeners[$sEventName][] = $sCallback;
+    }
+
+    public function triggerEvent($sEventName){
+        
+        $aCallbacks = $this->aEventListeners[$sEventName] ?? [];
+    
+        foreach ($aCallbacks as $sCallback) {
+            call_user_func($sCallback);
+        }
     }
 }
